@@ -72,16 +72,16 @@ export default function Counter() {
 
 ```mermaid
 flowchart TD
-    A[Developer edits component code + JSX] --> B[Build step (e.g., Vite/Babel) -> JS bundle]
+    A[Developer edits component code + JSX] --> B[Build step e.g., Vite/Babel -> JS bundle]
     B --> C[App runs: render function returns JSX]
     C --> D[React creates/updates Virtual DOM tree]
-    D --> E[Diff (reconcile) vs. previous Virtual DOM]
+    D --> E[Diff reconcile vs. previous Virtual DOM]
     E --> F{Minimal DOM mutations?}
     F -->|Yes| G[Commit phase: update real DOM]
     F -->|No| H[Skip DOM writes]
-    G --> I[Run layout effects (useLayoutEffect)]
+    G --> I[Run layout effects useLayoutEffect]
     I --> J[Paint to screen]
-    J --> K[Run passive effects (useEffect)]
+    J --> K[Run passive effects useEffect]
 ```
 
 **Notes**
@@ -97,8 +97,8 @@ flowchart TD
 flowchart LR
   subgraph React
     direction TB
-    A1[Component Logic<br/>(Functions + Hooks)] --> A2[JSX Elements]
-    A2 --> A3[Fiber Reconciler<br/>(schedules & diffs)]
+    A1[Component Logic<br/>Functions + Hooks] --> A2[JSX Elements]
+    A2 --> A3[Fiber Reconciler<br/>schedules & diffs]
     A3 --> A4[Renderers]
   end
 
