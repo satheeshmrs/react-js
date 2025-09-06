@@ -156,5 +156,13 @@ flowchart LR
 - Build something small (Todo, Counter, Fetch list).
 - Add routing (e.g., React Router) and data fetching (e.g., fetch/TanStack Query).
 - Try a meta-framework (Next.js) for server rendering and routing.
-```
+
+
+### What are the limitations of React?
+The few limitations of React are as given below:
+
+- React is not a full-blown framework as it is only a library.
+- The components of React are numerous and will take time to fully grasp the benefits of all.
+- It might be difficult for beginner programmers to understand React.
+- Coding might become complex as it will make use of inline templating and JSX.
 
