@@ -6,6 +6,7 @@
 - **IsValid**: Custom function , every time to validate the token
 - **atob**: In JavaScript, the atob() function is a global function used to decode a Base64-encoded string.
 - **Outlet:** Is the way to handle the privateRoute/authentication
+- **Router** Router dom
 
 - **Redirect if no token:**
 <img width="1362" height="672" alt="image" src="https://github.com/user-attachments/assets/cc3d03ec-39e9-4079-817e-12090dad7a05" />
@@ -17,6 +18,10 @@
 
 
 <img width="1056" height="618" alt="image" src="https://github.com/user-attachments/assets/9314da07-3d40-4edd-8bb0-7153d764ea72" />
+
+
+<img width="1000" height="633" alt="image" src="https://github.com/user-attachments/assets/3a6c315f-daae-459a-9838-61998fe0c0d1" />
+
 
 
 
