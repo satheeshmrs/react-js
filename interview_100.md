@@ -500,4 +500,135 @@ function MyForm() {
   return <input name="name" value={formData.name} onChange={handleChange} />;
 }
  ```
+
+## error boundaries in React for
+ - Error boundaries are a feature in React that help manage and handle errors in a more graceful way.
+ - How to implement error boundaries
+  - static getDerivedStateFromError(error): This method is used to update the state so the next render will show the fallback UI.
+  - componentDidCatch(error, info): This method is used to log error information.
+```javascript
+    import React, { Component } from 'react';
+
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+
+  static getDerivedStateFromError(error) {
+    // Update state so the next render shows the fallback UI
+    return { hasError: true };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    // You can also log the error to an error reporting service
+    console.error('Error caught by ErrorBoundary: ', error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      // You can render any custom fallback UI
+      return <h1>Something went wrong.</h1>;
+    }
+
+    return this.props.children;
+  }
+}
+
+export default ErrorBoundary;
+ ```
+Limitations
+Error boundaries have some limitations:
+
+- They do not catch errors inside event handlers. For event handlers, you need to use regular JavaScript try/catch blocks.
+- They do not catch errors in asynchronous code (e.g., setTimeout or requestAnimationFrame callbacks).
+- They do not catch errors during server-side rendering.
+- They do not catch errors thrown in the error boundary itself.
+## What is React Suspense?
+- React Suspense allows handling asynchronous operations more elegantly within components. 
+- It provides fallback content while waiting for resources like data or code to load. You can use it alongside React.lazy() for code splitting.
+
+## Explain prop drilling
+
+Prop drilling is when you pass data from a parent component to a deeply nested child component through props, even if intermediate components don't use it.
+```javascript
+function Grandparent() {
+  const data = 'Hello from Grandparent';
+  return <Parent data={data} />;
+}
+
+function Parent({ data }) {
+  return <Child data={data} />;
+}
+
+function Child({ data }) {
+  return <p>{data}</p>;
+}
+```
+
+## Lazy Loading 
+- Lazy loading in React is a technique where components are loaded only when they are needed, rather than at the initial page load.
+- This helps reduce the initial load time and improve performance by splitting the code into smaller chunks.
+```javascript
+import React, { Suspense, lazy } from 'react';
+
+const LazyComponent = lazy(() => import('./LazyComponent'));
+
+function App() {
+  return (
+    <Suspense fallback={<div>Loading...</div>}>
+      <LazyComponent />
+    </Suspense>
+  );
+}
+ ```
+
+## React component lifecycle methods 
+
+- Mounting:
+  - constructor: Initializes state or binds methods
+  - componentDidMount: Runs after the component mounts, useful for API calls or subscriptions
+
+ Updating:
+   - shouldComponentUpdate: Determines if the component should re-render
+   - componentDidUpdate: Runs after updates, useful for side effects
+
+ Unmounting:
+  - componentWillUnmount: Cleans up (e.g., removing event listeners).
+
+
+## React Router
+- React Router is a popular routing library for React applications that enables navigation between different components based on the URL.
+- It provides declarative routing, allowing you to define routes and their corresponding components in a straightforward manner.
+
+## How does React Router work, and how do you implement dynamic routing?
+ - React Router maps URL paths to components, enabling navigation in single-page apps.
+ -  Dynamic routing allows you to use URL parameters to render components based on dynamic values.
+```javascript
+   import { BrowserRouter, Routes, Route, useParams } from 'react-router-dom';
+
+function UserPage() {
+  const { id } = useParams(); // Access dynamic parameter
+  return <h1>User ID: {id}</h1>;
+}
+
+export default function App() {
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/user/:id" element={<UserPage />} /> {/* Dynamic path */}
+      </Routes>
+    </BrowserRouter>
+  );
+}
+ ```
+
+What is the difference between BrowserRouter and HashRouter?
+BrowserRouter: Uses the HTML5 History API to manage navigation, enabling clean URLs without the hash (#). It requires server-side configuration to handle routes correctly, especially for deep linking.
+
+HashRouter: Uses the hash (#) portion of the URL to simulate navigation. It doesn't require server-side configuration, as the hash is never sent to the server. This makes it suitable for environments where server-side routing isn't possible (e.g., static hosting).
+
+  
+
    
+
