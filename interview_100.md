@@ -628,6 +628,9 @@ BrowserRouter: Uses the HTML5 History API to manage navigation, enabling clean U
 
 HashRouter: Uses the hash (#) portion of the URL to simulate navigation. It doesn't require server-side configuration, as the hash is never sent to the server. This makes it suitable for environments where server-side routing isn't possible (e.g., static hosting).
 
+
+https://www.youtube.com/watch?v=nI8PYZNFtac
+
   
 
    
