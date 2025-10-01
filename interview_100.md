@@ -273,5 +273,231 @@ MyComponent.propTypes = {
  - State immutability helps efficiently determine when components need re-rendering;
  - direct mutations may prevent React from detecting changes.
 
-## React Hooks
+# React Hooks
+- Mastering React hooks is important in front end interviews because hooks are the standard way to manage state, side effects, and component lifecycle in modern React.
+- Demonstrating a solid understanding of hooks shows you can write clean, functional components and solve complex problems without relying on outdated class patterns.
 
+## What are the benefits of using hooks in React?
+- Hooks enable the use of state and other React features in functional components, replacing the need for class components.
+- They streamline code by reducing the reliance on lifecycle methods, enhance readability, and facilitate the reuse of stateful logic across components.
+- Popular hooks like useState and useEffect are used for managing state and side effects.
+
+## What are the rules of React hooks
+- React hooks should be called at the top level of a function, not inside loops, conditions, or nested functions.
+- They must only be used within React function components or custom hooks. These guidelines ensure proper state management and lifecycle behavior.
+
+## What is the difference between useEffect and useLayoutEffect in React?
+ - useEffect and useLayoutEffect both handle side effects in React functional components but differ in when they run:
+ - useEffect runs asynchronously after the DOM has rendered, making it suitable for tasks like data fetching or subscriptions.
+ - useLayoutEffect runs synchronously after DOM updates but before the browser paints, ideal for tasks like measuring DOM elements or aligning the UI with the DOM. Example:
+
+``` javascript
+import React, { useEffect, useLayoutEffect, useRef } from 'react';
+
+function Example() {
+  const ref = useRef();
+
+  useEffect(() => {
+    console.log('useEffect: Runs after DOM paint');
+  });
+
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect: Runs before DOM paint');
+    console.log('Element width:', ref.current.offsetWidth);
+  });
+
+  return <div ref={ref}>Hello</div>;
+}
+
+ ```
+## What does the dependency array of useEffect affect?
+- The dependency array of useEffect controls when the effect re-runs:
+
+ - If it's empty, the effect runs only once after the initial render.
+ - If it contains variables, the effect re-runs whenever any of those variables change.
+ - If omitted, the effect runs after every render.
+
+## What is the useRef hook in React and when should it be used?
+ - The useRef hook creates a mutable object that persists through renders,
+ - allowing direct access to DOM elements, storing mutable values without causing re-renders, and maintaining references to values.
+
+  ```javascript
+   import React, { useRef, useEffect } from 'react';
+
+     function TextInputWithFocusButton() {
+       const inputEl = useRef(null);
+       useEffect(() => {
+         inputEl.current.focus();
+       }, []);
+       return <input ref={inputEl} type="text" />;
+     }
+  ```
+
+## What is the purpose of callback function argument format of setState() in React class components and when should it be used?
+- The callback function format of setState() in React ensures that state updates are based on the most current state and props.
+- This is essential when the new state depends on the previous state. Instead of passing an object directly to setState(), you provide a function that takes the previous state and props as arguments, returning the updated state.
+
+```javascript
+ this.setState((prevState, props) => ({
+  counter: prevState.counter + props.increment,
+}));
+ ```
+## What is the useCallback hook in React and when should it be used?
+
+ - The useCallback hook memoizes functions to prevent their recreation on every render.
+ - This is especially beneficial when passing callbacks to optimized child components that depend on reference equality to avoid unnecessary renders.
+ - Use it when a function is passed as a prop to a child component.
+```javascript
+   const memoizedCallback = useCallback(() => {
+   doSomething(a, b);
+  }, [a, b]);
+```
+## What is the useMemo hook in React and when should it be used?
+- The useMemo hook memoizes costly calculations, recomputing them only when dependencies change.
+- This enhances performance by avoiding unnecessary recalculations.
+- It should be used for computationally intensive functions that don't need to run on every render.
+  const memoizedValue = useMemo(() => computeExpensiveValue(a, b), [a, b]);
+
+## Real-World Examples
+  
+- useMemo
+
+  - Sorting, filtering, or mapping large datasets.
+
+  - Complex mathematical computations (e.g., analytics dashboards).
+
+  - Formatting expensive values (e.g., currency formatting thousands of items).
+
+- useCallback
+
+  - Passing event handlers to child components that are memoized (React.memo).
+
+  - Optimizing lists where each item has buttons or handlers.
+
+  - Preventing unnecessary renders in components using callbacks as props.
+ 
+  ## What is the useReducer hook in React and when should it be used?
+
+  - The useReducer hook manages complex state logic in functional components, serving as an alternative to useState.
+  - It's ideal when state has multiple fields (and there are constraints around how they should be mutated), or when the next state relies on the previous one.
+
+  - The useReducer hook accepts a reducer function + an initial state. The reducer function is passed the current state and action and returns a new state.
+
+  - const [state, dispatch] = useReducer(reducer, initialState);
+ ```javascript
+  import React, { useReducer } from "react";
+
+// 1. Define the initial state
+const initialState = {
+  cart: [],
+  total: 0,
+};
+
+// 2. Define the reducer function
+function cartReducer(state, action) {
+  switch (action.type) {
+    case "ADD_ITEM":
+      return {
+        ...state,
+        cart: [...state.cart, action.payload],
+        total: state.total + action.payload.price,
+      };
+
+    case "REMOVE_ITEM":
+      const updatedCart = state.cart.filter((_, i) => i !== action.index);
+      const removedItem = state.cart[action.index];
+      return {
+        ...state,
+        cart: updatedCart,
+        total: state.total - removedItem.price,
+      };
+
+    case "CLEAR_CART":
+      return initialState;
+
+    default:
+      return state;
+  }
+}
+
+// 3. Use the reducer in a component
+function ShoppingCart() {
+  const [state, dispatch] = useReducer(cartReducer, initialState);
+
+  const addItem = (item) => {
+    dispatch({ type: "ADD_ITEM", payload: item });
+  };
+
+  return (
+    <div>
+      <h2>Shopping Cart</h2>
+      <button onClick={() => addItem({ name: "Laptop", price: 1000 })}>
+        Add Laptop
+      </button>
+      <button onClick={() => addItem({ name: "Phone", price: 500 })}>
+        Add Phone
+      </button>
+      <button onClick={() => dispatch({ type: "CLEAR_CART" })}>
+        Clear Cart
+      </button>
+
+      <h3>Items:</h3>
+      <ul>
+        {state.cart.map((item, index) => (
+          <li key={index}>
+            {item.name} - ${item.price}
+            <button onClick={() => dispatch({ type: "REMOVE_ITEM", index })}>
+              Remove
+            </button>
+          </li>
+        ))}
+      </ul>
+
+      <h3>Total: ${state.total}</h3>
+    </div>
+  );
+}
+
+export default ShoppingCart;
+
+   ```
+
+## What is the useId hook in React and when should it be used?
+
+- The useId hook generates unique IDs for elements within a component, which is crucial for accessibility by dynamically creating ids that can be used for linking form inputs and labels. - - It guarantees unique IDs across the application even if the component renders multiple times.
+```javascript
+  import { useId } from 'react';
+
+function MyComponent() {
+  const id = useId();
+
+  return (
+    <div>
+      <label htmlFor={id}>Name:</label>
+      <input id={id} type="text" />
+    </div>
+  );
+}
+ ```
+
+## Can you explain how to create and use custom hooks in React?
+
+- To create and use custom hooks in React:
+
+- Create a function that starts with use and uses built-in hooks like useState or useEffect
+ Return the values or functions you want to share.
+Example:
+```javascript
+function useForm(initialState) {
+  const [formData, setFormData] = useState(initialState);
+  const handleChange = (e) =>
+    setFormData({ ...formData, [e.target.name]: e.target.value });
+  return [formData, handleChange];
+}
+
+function MyForm() {
+  const [formData, handleChange] = useForm({ name: '', email: '' });
+  return <input name="name" value={formData.name} onChange={handleChange} />;
+}
+ ```
+   
