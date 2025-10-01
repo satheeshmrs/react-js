@@ -137,4 +137,141 @@ export default App;
 - Shadow DOM → A mini secret DOM inside a component that keeps its styles and structure private. ✅ Result: Encapsulation — safer, reusable components without CSS conflicts.
 
 ## What is the difference between Controlled and Uncontrolled React components?
+- In controlled components, form data is managed through the component's state, making it the definitive source of truth. Input value changes are handled by event handlers.
+- In uncontrolled components, the form state is managed internally and accessed via refs.
+-  Controlled components provide more control and are easier to test, while uncontrolled components are simpler for basic use cases.
+
+```javascript
+ function ControlledInput() {
+  const [value, setValue] = React.useState('');
+  return (
+    <input
+      type="text"
+      value={value}
+      onChange={(e) => setValue(e.target.value)}
+    />
+  );
+}
+
+```
+
+```javascript
+function UncontrolledInput() {
+  const inputRef = React.useRef();
+  return <input type="text" ref={inputRef} />;
+}
+```
+## Pure Components:
+- Pure Components in React are components that only re-render when their props or state change. 
+- They use shallow comparison to check if the props or state have changed, preventing unnecessary re-renders and improving performance.
+- Class components can extend React.PureComponent to become pure
+- Functional components can use React.memo for the same effect
+
+```javascript
+  const PureFunctionalExample = React.memo(function ({ value }) {
+  return <div>{value}</div>;
+});
+  ```
+##  What is the difference between createElement and cloneElement?
+createElement:
+ - Used to create a new React element.
+ - It takes the type of the element (e.g., 'div', a React component), props, and children, and returns a new React element.
+ - Commonly used internally by JSX or when dynamically creating elements. Example:
+ - React.createElement('div', { className: 'container' }, 'Hello World');
+   ##
+cloneElement:
+ - Used to clone an existing React element and optionally modify its props.
+ - It allows you to clone a React element and pass new props or override the existing ones, keeping the original element's children and state.
+ - Useful when you want to manipulate an element without recreating it. Example:
+```javascript
+ const element = <button className="btn">Click Me</button>;
+ const clonedElement = React.cloneElement(element, { className: 'btn-primary' });
+  ```
+
+## What is the role of PropTypes in React?
+ - PropTypes in React is used for type-checking props passed to components,
+ - ensuring the correct data types are used and warning developers during development.
+```javascript
+import PropTypes from 'prop-types';
+
+function MyComponent({ name, age }) {
+  return (
+    <div>
+      {name} is {age} years old
+    </div>
+  );
+}
+
+MyComponent.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number.isRequired,
+};
+
+  ```
+- It helps catch errors early, improving code quality. 
+- However, modern React components tend to be written in TypeScript and prop type mismatches can be caught at compile time rather than at runtime.
+  
+## What are stateless components?
+- Stateless components in React are components that do not manage or hold any internal state. They simply receive data via props and render UI based on that data. These components are often functional components and are used for presentational purposes.
+```javascript
+  function StatelessComponent({ message }) {
+  return <div>{message}</div>;
+}
+ ```
+
+## stateful components
+- Stateful components in React are components that manage and hold their own internal state.
+- They can modify their state in response to user interactions or other events and re-render themselves when the state changes.
+```javascript
+  function StatefulComponent() {
+  const [count, setCount] = React.useState(0);
+
+  return (
+    <div>
+      <p>{count}</p>
+      <button onClick={() => setCount(count + 1)}>Increment</button>
+    </div>
+  );
+}
+ ```
+
+## What are the recommended ways for type checking of React component props?
+
+- TypeScript: A superset of JavaScript that adds optional static typing. It provides strong type checking, autocompletion, and other benefits at development time.
+
+```javascript
+  interface MyComponentProps {
+  name: string;
+  age: number;
+}
+
+function MyComponent({ name, age }: MyComponentProps) {
+  return <div>{name} is {age} years old</div>;
+}
+```
+- PropTypes: A runtime type-checking tool for React props, primarily for development purposes. It helps catch errors by checking prop types during development but doesn't offer full static analysis like TypeScript.
+
+```javascript
+  import PropTypes from 'prop-types';
+
+function MyComponent({ name, age }) {
+  return (
+    <div>
+      {name} is {age} years old
+    </div>
+  );
+}
+
+MyComponent.propTypes = {
+  name: PropTypes.string.isRequired,
+  age: PropTypes.number.isRequired,
+};
+ ```
+
+## Why does React recommend against mutating state?
+ - React advises against mutating state as it can lead to unexpected behaviors and bugs.
+ - State immutability helps efficiently determine when components need re-rendering;
+ - direct mutations may prevent React from detecting changes.
+
+## React Hooks
 
